@@ -29,7 +29,8 @@ const SiteHeader = ({ darkMode, toggleDarkMode }) => {
   const { favorites, mustWatch } = useContext(MoviesContext);
 
   const menuOptions = [
-    { label: "Home", path: "/" },
+    { label: "Start", path: "/" },
+    { label: "Home", path: "/movies/nowPlaying" },
     { label: "Favorites", path: "/movies/favorites" },
     { label: "Upcoming", path: "/movies/upcoming" },
     { label: "Watchlist", path: "/watchlist" },
