@@ -2,7 +2,6 @@ import React, { useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Navigate, Routes } from "react-router";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
-import HomePage from "./pages/homePage";
 import MoviePage from "./pages/movieDetailsPage";
 import FavoriteMoviesPage from "./pages/favoriteMoviesPage";
 import MovieReviewPage from "./pages/movieReviewPage";
@@ -18,6 +17,10 @@ import WatchListPage from "./pages/watchListPage";
 import NowPlayingPage from "./pages/nowPlayingMovies";
 import TopRatedMoviesPage from "./pages/topRatedMoviesPage";
 import ActorsPage from "./pages/actorsPage";
+import LoginPage from "./pages/loginPage";
+import SignupPage from "./pages/signupPage";
+import StartPage from "./pages/startPage";
+import ProfilePage from "./pages/profilePage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -54,6 +57,10 @@ const App = () => {
           <MoviesContextProvider>
             <SiteHeader darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
             <Routes>
+              <Route path="/" element={<StartPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignupPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
               <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
               <Route path="/reviews/:id" element={<MovieReviewPage />} />
               <Route path="/movies/:id/recommendations" element={<MovieRecommendationsPage />} />
@@ -65,7 +72,6 @@ const App = () => {
               <Route path="/movies/nowplaying" element={<NowPlayingPage />} />
               <Route path="/movies/top-rated" element={<TopRatedMoviesPage />} />
               <Route path="/actors" element={<ActorsPage />} />
-              <Route path="/" element={<HomePage />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </MoviesContextProvider>
