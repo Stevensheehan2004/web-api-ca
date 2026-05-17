@@ -200,7 +200,7 @@ export const getPopularActors = (page) => {
 };
 
 export const login = async (username, password) => {
-    const response = await fetch('http://localhost:8080/api/users', {
+    const response = await fetch('http://localhost:8081/api/users', {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -211,7 +211,7 @@ export const login = async (username, password) => {
 };
 
 export const signup = async (username, password) => {
-    const response = await fetch('http://localhost:8080/api/users?action=register', {
+    const response = await fetch('http://localhost:8081/api/users?action=register', {
         headers: {
             'Content-Type': 'application/json'
         },
