@@ -1,10 +1,16 @@
+import React, { useContext } from "react";
+import { AuthContext } from '../contexts/authContext';
 import { useNavigate } from "react-router";
-import React from "react";
 
 const ProfilePage = () => {
+    const context = useContext(AuthContext);
     const navigate = useNavigate();
   
-    return (
+    return context.isAuthenticated ? (
+        <p>
+            User profile: {context.userName}
+        </p>
+    ) : (
         <p>
             You must log in to see your profile! {" "}
             <button onClick={() => navigate('/login')}>Login</button>

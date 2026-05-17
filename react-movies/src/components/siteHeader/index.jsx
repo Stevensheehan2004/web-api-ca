@@ -15,6 +15,7 @@ import { styled } from "@mui/material/styles";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { MoviesContext } from "../../contexts/moviesContext";
+import { AuthContext } from "../../contexts/authContext";
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
@@ -27,6 +28,7 @@ const SiteHeader = ({ darkMode, toggleDarkMode }) => {
 
   const navigate = useNavigate();
   const { favorites, mustWatch } = useContext(MoviesContext);
+  const context = useContext(AuthContext);
 
   const menuOptions = [
     { label: "Start", path: "/" },
@@ -57,41 +59,22 @@ const SiteHeader = ({ darkMode, toggleDarkMode }) => {
           color: "white",
         }}
       >
-        <Toolbar>
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+
           <Typography
-            variant="h4"
+            variant="h6"
             component={RouterLink}
             to="/"
             sx={{
-              flexGrow: 1,
               textDecoration: "none",
               color: "inherit",
-              transition: "opacity 0.2s ease",
-              "&:hover": {
-                opacity: 0.8,
-              },
+              whiteSpace: "nowrap",
+              mr: 2,
+              "&:hover": { opacity: 0.8 },
             }}
           >
             TMDB Client
           </Typography>
-
-          {!isMobile && (
-            <Typography variant="h6" sx={{ flexGrow: 1 }}>
-              All you ever wanted to know about Movies!
-            </Typography>
-          )}
-
-          <FormControlLabel
-            control={
-              <Switch
-                checked={darkMode}
-                onChange={toggleDarkMode}
-                color="default"
-              />
-            }
-            label="Dark Mode"
-            sx={{ mr: 2 }}
-          />
 
           {isMobile ? (
             <>
@@ -104,44 +87,34 @@ const SiteHeader = ({ darkMode, toggleDarkMode }) => {
               >
                 <MenuIcon />
               </IconButton>
-
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
                 keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
+                transformOrigin={{ vertical: "top", horizontal: "right" }}
                 open={open}
                 onClose={() => setAnchorEl(null)}
               >
                 {menuOptions.map((opt) => (
-                  <MenuItem
-                    key={opt.label}
-                    onClick={() => handleMenuSelect(opt.path)}
-                  >
+                  <MenuItem key={opt.label} onClick={() => handleMenuSelect(opt.path)}>
                     {opt.label}
                   </MenuItem>
                 ))}
               </Menu>
             </>
           ) : (
-            <>
+            <div style={{ display: "flex", flexGrow: 1, flexWrap: "nowrap", overflow: "hidden" }}>
               {menuOptions.map((opt) => {
                 let count = 0;
                 if (opt.label === "Favorites") count = favorites.length;
                 if (opt.label === "Watchlist") count = mustWatch.length;
-
                 return (
                   <Button
                     key={opt.label}
                     color="inherit"
                     onClick={() => handleMenuSelect(opt.path)}
+                    sx={{ fontSize: "0.75rem", px: 1 }}
                   >
                     <Badge badgeContent={count} color="error">
                       {opt.label}
@@ -149,8 +122,33 @@ const SiteHeader = ({ darkMode, toggleDarkMode }) => {
                   </Button>
                 );
               })}
-            </>
+            </div>
           )}
+
+          <div style={{ display: "flex", alignItems: "center", whiteSpace: "nowrap", gap: "8px" }}>
+            <FormControlLabel
+              control={<Switch checked={darkMode} onChange={toggleDarkMode} color="default" />}
+              label="Dark"
+              sx={{ mr: 1 }}
+            />
+            {context.isAuthenticated ? (
+  <>
+    <Typography variant="body2" sx={{ mr: 1 }}>
+      Welcome {context.userName}!
+    </Typography>
+    <Button color="inherit" size="small" onClick={() => navigate("/profile")}>Profile</Button>
+    <Button color="inherit" size="small" onClick={() => context.signout()}>Sign Out</Button>
+  </>
+) : (
+  <>
+    <Typography variant="body2" sx={{ mr: 1 }}>
+      You are not logged in
+    </Typography>
+    <Button color="inherit" size="small" onClick={() => navigate("/login")}>Login</Button>
+    <Button color="inherit" size="small" onClick={() => navigate("/signup")}>Signup</Button>
+  </>
+)}
+          </div>
         </Toolbar>
       </AppBar>
       <Offset />
