@@ -53,7 +53,9 @@ const styles = {
     padding: '12px 0', 
     borderTop: '0.5px solid rgba(0,0,0,0.08)', 
     fontSize: '14px', 
-    color: '#333' 
+    color: '#c020a0', 
+    cursor: 'pointer',
+    textDecoration: 'none',
   },
   rowIcon: { 
     fontSize: '18px', 
@@ -95,9 +97,15 @@ const ProfilePage = () => {
                 <p style={styles.label}>Logged in</p>
               </div>
             </div>
-            <div style={styles.row}><span style={styles.rowIcon}>⭐</span> Favorites</div>
-            <div style={styles.row}><span style={styles.rowIcon}>🔖</span> Watchlist</div>
-            <div style={styles.row}><span style={styles.rowIcon}>✏️</span> My reviews</div>
+            <div style={styles.row} onClick={() => navigate('/movies/favorites')}>
+              <span style={styles.rowIcon}>⭐</span> Favorites
+            </div>
+            <div style={styles.row} onClick={() => navigate('/watchlist')}>
+              <span style={styles.rowIcon}>🔖</span> Watchlist
+            </div>
+            <div style={styles.row} onClick={() => navigate('/reviews/form')}>
+              <span style={styles.rowIcon}>✏️</span> My reviews
+            </div>
           </>
         ) : (
           <div style={styles.notLogged}>

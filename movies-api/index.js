@@ -31,7 +31,7 @@ app.use(express.static('public'));
 
 app.use(express.json());
 
-app.use('/api/movies', moviesRouter);
+app.use('/api/movies', authenticate, moviesRouter);
 
 //Users router
 app.use('/api/users', usersRouter);

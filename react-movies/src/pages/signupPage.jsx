@@ -73,21 +73,24 @@ const SignUpPage = () => {
   const [registered, setRegistered] = useState(false);
 
   const register = async () => {
-    const passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+    const passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (passwordRegEx.test(password) && password === passwordAgain) {
       const result = await context.register(userName, password);
+      if (result) {
+        await context.authenticate(userName, password);
+      }
       setRegistered(result);
     }
   };
 
-  if (registered === true) return <Navigate to="/login" />;
+  if (registered === true) return <Navigate to="/" />;
 
   return (
     <div style={styles.page}>
       <div style={styles.card}>
         <div style={styles.icon}>✨</div>
         <h2 style={styles.title}>Create account</h2>
-        <p style={styles.subtitle}>Passwords must be 8+ characters with at least one uppercase letter, one lowercase letter, and one symbol.</p>
+        <p style={styles.subtitle}>Passwords must be 8+ characters with at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&).</p>
         <input style={styles.input} value={userName} placeholder="Username" onChange={e => setUserName(e.target.value)} />
         <input style={styles.input} value={password} type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
         <input style={styles.input} value={passwordAgain} type="password" placeholder="Confirm password" onChange={e => setPasswordAgain(e.target.value)} />
